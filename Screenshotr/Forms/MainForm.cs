@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -39,12 +40,22 @@ namespace Screenshotr.Forms
                 var modifier = (KeyModifier) ((int) m.LParam & 0xFFFF); // The modifier of the hotkey that was pressed.
                 var id = m.WParam.ToInt32(); // The id of the hotkey that was pressed.
 
-                var dialog = new RegionArea();
-                if (dialog.ShowDialog() == DialogResult.OK)
+                using (var dialog = new RegionArea())
                 {
-                    var screenshot = ScreenshotProvider.TakeScreenshot(SystemInformation.VirtualScreen);
-                    var bitmap = screenshot.Clone(dialog.SelectedArea, PixelFormat.Format32bppArgb);
-                    ImgurHelper.UploadToImgur(bitmap);
+                    if (dialog.ShowDialog() == DialogResult.OK)
+                    {
+                        Rectangle selectedArea = dialog.SelectedArea;
+                        var screenshot = ScreenshotProvider.TakeScreenshot(SystemInformation.VirtualScreen);
+
+                        Bitmap croppedBitmap = new Bitmap(selectedArea.Width, selectedArea.Height);
+                        Graphics g = Graphics.FromImage(croppedBitmap);
+                        g.DrawImage(screenshot, -selectedArea.X, -selectedArea.Y);
+
+                        ImgurHelper.UploadToImgur(croppedBitmap);
+
+                        croppedBitmap.Dispose();
+                        g.Dispose();    
+                    }
                 }
             }
         }

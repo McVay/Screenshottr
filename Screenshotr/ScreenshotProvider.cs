@@ -7,8 +7,6 @@ namespace Screenshotr
     {
         public static Bitmap TakeScreenshot(Rectangle area)
         {
-            // Use the Windows API here instead of the managed equivalent because the
-            // managed equivalent has a number of bugs.
 
             var handleDesktopWindow = NativeMethods.GetDesktopWindow();
             var handleSource = NativeMethods.GetWindowDC(handleDesktopWindow);

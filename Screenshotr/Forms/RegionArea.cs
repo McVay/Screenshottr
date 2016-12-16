@@ -43,6 +43,7 @@ namespace Screenshotr.Forms
             _btnTakeScreenshot.Text = "Take Screenshot";
             _btnTakeScreenshot.BackColor = Color.White;
             _btnTakeScreenshot.Width = 100;
+            _btnTakeScreenshot.AutoSize = true;
             _btnTakeScreenshot.Click += TakeScreenshot;
             _btnTakeScreenshot.Hide();
         }
@@ -52,7 +53,6 @@ namespace Screenshotr.Forms
             DialogResult = DialogResult.OK;
         }
 
-
         public void SetButtonProperties(Rectangle selectedArea)
         {
             var width = _btnTakeScreenshot.Width;
@@ -60,7 +60,6 @@ namespace Screenshotr.Forms
                 selectedArea.Y + selectedArea.Height + 5);
             _btnTakeScreenshot.Show();
         }
-
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
@@ -87,7 +86,6 @@ namespace Screenshotr.Forms
                     var newY = SelectedArea.Top;
                     var newWidth = SelectedArea.Width;
                     var newHeight = SelectedArea.Height;
-
 
                     switch (_selectedNode)
                     {
